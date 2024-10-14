@@ -1,68 +1,43 @@
+# Task 1: Load the Dataset
+# Points: 5
+
 import pandas as pd
-import seaborn as sns
-import numpy as np
-import matplotlib.pyplot as plt         #  importing some basic libraries to work with the dataset and for visualization
 
-
-
-def load_data(filepath):
-    """
-    Load the dataset into a pandas DataFrame.
-    """
-    df = pd.read_csv(filepath)
+def load_dataset(path):
+    """Load the dataset from the given path."""
+    df = pd.read_csv(path)
     return df
 
 def check_missing_values(df):
-    """
-    Check for missing values in the DataFrame.
-    """
-    missing = df.isnull().sum()
-    print("Missing Values:\n", missing)
+    """Check if the dataset has any missing values."""
+    return df.isnull().sum().sum() == 0
 
-def generate_summary_statistics(df):
-    """
-    Generate summary statistics for key variables.
-    """
-    summary = df.describe()
-    print("Summary Statistics:\n", summary)
+#Task 2: Cleaning DATA 
+# Points: 5
 
-def visualize_distributions(df):
-    """
-    Visualize distributions of age, balance, credit_score, and estimated_salary.
-    """
-    plt.figure(figsize=(12, 10))
-    
-    plt.subplot(2, 2, 1)
-    sns.histplot(df['age'], kde=True)
-    plt.title('Age Distribution')
-    
-    plt.subplot(2, 2, 2)
-    sns.histplot(df['balance'], kde=True)
-    plt.title('Balance Distribution')
-    
-    plt.subplot(2, 2, 3)
-    sns.histplot(df['credit_score'], kde=True)
-    plt.title('Credit Score Distribution')
-    
-    plt.subplot(2, 2, 4)
-    sns.histplot(df['estimated_salary'], kde=True)
-    plt.title('Estimated Salary Distribution')
-    
-    plt.tight_layout()
-    plt.show()
+def clean_data(df):
+    """Clean the dataset by handling missing values, if any."""
+    df.dropna(inplace=True)  # Drop rows with missing values (for simplicity)
+    return df
 
-def main():
-    # Load data
-    df = load_data('data/bank_churn.csv')
+#Task 3: Exploratory Data Analysis (EDA)
+# Points: 5
+
+# src/eda.py
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+def perform_eda(df):
+    """Perform basic EDA, generate plots and summary statistics."""
+    summary_stats = df.describe()
     
-    # Check for missing values
-    check_missing_values(df)
+    # Visualize key variables
+    df.hist(['Age', 'Balance', 'CreditScore', 'EstimatedSalary'], figsize=(10, 8))
+    plt.savefig('data/eda_histograms.png')
     
-    # Generate summary statistics
-    generate_summary_statistics(df)
-    
-    # Visualize distributions
-    visualize_distributions(df)
+    return summary_stats
+
 
 if __name__ == "__main__":
     main()
